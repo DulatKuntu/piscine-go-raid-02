@@ -6,15 +6,15 @@ import "fmt"
 
 func main() {
 	var board [9][9]string
-	var row [81]int
-	var col [81]int
+	var row [82]int
+	var col [82]int
 	cell := 0
 	for i, word := range os.Args {
 		if i > 0 {
 			for j, letter := range word {
 				board[i-1][j] = string(letter)
 				if string(letter) == "." {
-					row[cell] = i-1
+					row[cell] = i - 1
 					col[cell] = j
 					cell++
 				}
@@ -23,12 +23,12 @@ func main() {
 	}
 	row[cell] = 100
 	col[cell] = 100
-	//fmt.Println(Valid(board))
-	//fmt.Println(row)
-	//fmt.Println(col)
-	//fmt.Println(string(48))
-	fmt.Println(Sudoku(row,col,board,0))
-	fmt.Println(board)
+	if Sudoku(row, col, board, 0) == board {
+		fmt.Println("Error")
+	} else {
+		fmt.Println(Sudoku(row, col, board, 0))
+	}
+
 }
 
 func Valid(array [9][9]string) bool {
@@ -78,24 +78,24 @@ func Valid(array [9][9]string) bool {
 	return true
 }
 
-func Sudoku(row [81]int, col [81]int, array [9][9]string, i int) [9][9]string {
+func Sudoku(row [82]int, col [82]int, array [9][9]string, i int) [9][9]string {
 	if i < 0 {
-		return array 
+		return array
 	}
 	if row[i] > 10 {
 		return array
 	}
-	
+
 	array[row[i]][col[i]] = string(Atoi(array[row[i]][col[i]]) + 49)
-	if array[row[i]][col[i]] > "9"{
+	if array[row[i]][col[i]] > "9" {
 		array[row[i]][col[i]] = "."
-		return Sudoku(row,col,array,i - 1)
+		return Sudoku(row, col, array, i-1)
 	}
-	
+
 	if Valid(array) {
-		return Sudoku(row,col,array,i + 1)
+		return Sudoku(row, col, array, i+1)
 	} else {
-		 return Sudoku(row,col,array,i)
+		return Sudoku(row, col, array, i)
 	}
 }
 
